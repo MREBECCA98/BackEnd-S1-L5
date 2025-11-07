@@ -1,5 +1,6 @@
 ﻿using BackEnd_S1_L5;
 using System.ComponentModel;
+using System.Security;
 
 
 
@@ -8,10 +9,11 @@ List<Contribuente> ListaContribuente = new List<Contribuente>();
 
 Lista:
 
-Console.WriteLine("Esegui i passaggi:");
+Console.WriteLine("\nEsegui i passaggi:");
 Console.WriteLine("""
     1: Inserisci i tuoi dati
     2: Lista contribuenti
+    3: Esci
     """);
 
 int scelta = int.Parse(Console.ReadLine());
@@ -23,57 +25,18 @@ switch (scelta)
         {
             Contribuente nuovoContribuente = new Contribuente();
 
-            //Nome
-            do
-            {
-                Console.WriteLine("Inserisci il tuo nome");
-                nuovoContribuente.Nome = Console.ReadLine();
+            nuovoContribuente.InserisciDati();
 
-                if (string.IsNullOrWhiteSpace(nuovoContribuente.Nome))
-                {
-                    Console.WriteLine("Campo vuoto, inserisci il tuo nome");
-                }
-            } while (string.IsNullOrWhiteSpace(nuovoContribuente.Nome));
-
-
-
-
-            //Cognome
-            do
-            {
-                Console.WriteLine("Inserisci il tuo cognome");
-                nuovoContribuente.Cognome = Console.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(nuovoContribuente.Cognome))
-                {
-                    Console.WriteLine("Campo vuoto, inserisci il tuo cognome");
-                }
-            } while (string.IsNullOrWhiteSpace(nuovoContribuente.Cognome));
-
-
-            //Data di nascita
-
-            Console.WriteLine("Inserisci la tua data di nascita");
-            nuovoContribuente.DataNascita = Convert.ToDateTime(Console.ReadLine());
-            //Codice Fiscale
-            Console.WriteLine("Inserisci il tuo codice fiscale");
-            nuovoContribuente.CodiceFiscale = Console.ReadLine();
-            //Sesso
-            Console.WriteLine("Inserisci il tuo sesso (M, F)");
-            nuovoContribuente.Sesso = Convert.ToChar(Console.ReadLine());
-            //Comune di residenza
-            Console.WriteLine("Inserisci il tuo comune di residenza");
-            nuovoContribuente.ComuneResidenza = Console.ReadLine();
-            //Reddito annuale
-            Console.WriteLine("Inserisci il tuo reddito annuale");
-            nuovoContribuente.RedditoAnnuale = Convert.ToDecimal(Console.ReadLine());
-
-            //Aggiungi alla lista i dati del contribuente
             ListaContribuente.Add(nuovoContribuente);
 
-            Console.WriteLine("Contribuente aggiunto!");
 
+            Console.WriteLine("\nContribuente aggiunto!");
 
+            
+            nuovoContribuente.RiepilogoContribuente();
+       
+
+            
 
 
         }
@@ -85,6 +48,35 @@ switch (scelta)
         {
             Console.WriteLine(ex.Message);
         }
+        break;
+    case 2:
+        try
+        {
+            if(ListaContribuente.Count == 0)
+            {
+                Console.WriteLine("Non ci sono contribuenti nella lista");
+            }
+            else
+            {
+                Console.WriteLine("\nLISTA CONTRIBUENTI:");
+                foreach (var contribuente in ListaContribuente)
+                {
+                    contribuente.RiepilogoContribuente();
+                } ;
+            }
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine("Errore nell'inserimento dei dati");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        break;
+    case 3:
+        Console.WriteLine("Sessione terminata");
+        Environment.Exit(0);
         break;
 
 
